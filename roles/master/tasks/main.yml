@@ -1,0 +1,24 @@
+---
+
+- name: copy kubeconfig  file to build your cluster 
+  template: src="kubeconfig.j2" dest=/root/kubeconfig.yml
+  register: kube_config
+
+
+
+- name: copy sysctl.bash
+  template: src="sysctl.bash" dest=/root/sysctl.bash
+  register: kube_config
+
+
+- name: Change file permission
+  file:
+    path: /root/sysctl.bash
+    owner: root
+    group: root
+    mode: '0777'
+
+
+- script : /root/sysctl.bash
+
+

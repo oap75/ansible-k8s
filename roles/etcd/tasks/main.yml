@@ -1,0 +1,18 @@
+---
+- name: write & copy etcd.service
+  template: src=etcd.service.j2 dest=/etc/systemd/system/etcd.service
+
+
+- name: copy run-etcd.bash script 
+  template: src=run-etcd.bash dest=/etc/etcd/run-etcd.bash
+
+  - name: Change file permission
+    file:
+      path: /etc/etcd/run-etcd.bash
+      owner: root
+      group: root
+      mode: '0777'
+
+
+- script : /etc/etcd/run-etcd.bash
+

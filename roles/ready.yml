@@ -1,0 +1,12 @@
+---
+
+# This playbook will ready you machins 
+
+# ready all machines
+ - hosts: all
+   vars_files:
+     - all.yml.example
+   roles: 
+     - role: ready
+   tags:
+     - ready

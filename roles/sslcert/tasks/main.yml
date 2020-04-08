@@ -1,0 +1,45 @@
+---
+- name: create ssl cert dir
+  file: path={{ master_cert_dir }} state=directory
+  register: master_ssl_dir
+
+- name: copy ca-config conf file to create certificate
+  template: src="ca-config.conf.j2" dest={{ master_cert_dir }}/ca-config.json
+  register: ssl_config
+
+- name: copy ca-csr conf file to create certificate
+  template: src="ca-csr.conf.j2" dest={{ master_cert_dir }}/ca-csr.json
+  register: ssl_config
+
+- name: copy etcd-csr conf file to create certificate
+  template: src="etcd.conf.j2" dest={{ master_cert_dir }}/etcd-csr.json
+  register: ssl_config
+
+
+
+- name: copy cfssl.bash
+  template: src="cfssl.bash" dest={{ master_cert_dir }}/cfssl.bash
+  register: ssl_config
+
+
+- name: Change file permission
+  file:
+    path: /opt/ssl/cfssl.bash
+    owner: root
+    group: root
+    mode: '0777'
+
+
+- script : /opt/ssl/cfssl.bash
+
+
+
+
+# - name: create etcd certificate
+#   when: etcd_peer_url_scheme == 'https'
+#   register: etcd_cert
+#   command: "{{ item }}"
+#   with_items:
+#     - "cfssl gencert -initca /opt/ssl/ca-csr.json | cfssljson -bare /opt/ssl/ca"
+#     - "cfssl gencert -ca=/opt/ssl/ca.pem -ca-key=/opt/ssl/ca-key.pem -config=/opt/ssl/ca-config.json -profile=kubernetes /opt/ssl/etcd-csr.json | cfssljson -bare /opt/ssl/etcd"
+

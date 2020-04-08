@@ -1,0 +1,53 @@
+---
+# This playbook deploys a kubernetes cluster 
+
+# Install sslcert
+# - hosts: sslhost
+#   vars_files:
+#     - all.yml.example
+#   roles:
+#     - role: sslcert 
+#   tags:
+#     - sslcert
+
+# copy sslcert
+# - hosts: etcd
+#   vars_files:
+#     - all.yml.example
+#   roles:
+#     - role: sslcert-copy
+#   tags:
+#     - sslcert-copy
+
+# Install etcd
+# - hosts: etcd
+#   vars_files:
+#     - all.yml.example
+#   roles:
+#     - role: etcd
+#   tags:
+#     - etcd
+
+# copy master-config-files
+#  - hosts: kube-config
+#    vars_files:
+#      - all.yml.example
+#    roles:
+#      - role: kube-config
+#    tags:
+#      - kube-config
+
+# install haproxy
+#- hosts: ha
+#  roles:
+#    - { role: haproxy, when: haproxy.enabled }
+#  tags:
+#    - haproxy
+
+# install keepalived
+#- hosts: ha
+#  roles:
+#    - { role: keepalived, when: keepalived.enabled }
+#  tags:
+#    - keepalived
+

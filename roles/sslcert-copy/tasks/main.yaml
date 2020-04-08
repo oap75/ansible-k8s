@@ -1,0 +1,22 @@
+---
+
+- name: create etcd cert dir
+  file: path={{ etcd_certs_dir }} state=directory
+  register: etcd_ssl_dir
+
+
+- name: create etcd lib dir
+  file: path={{ etcd_lib_dir }} state=directory
+  register: etcd_lib_dir
+
+
+
+- name: copy all certs
+  copy:
+    src={{ master_cert_dir }}/{{ item }}
+    dest={{ etcd_certs_dir }}
+  with_items:
+    - "ca-key.pem"
+    - "ca.pem"
+    - "etcd-key.pem"
+    - "etcd.pem"

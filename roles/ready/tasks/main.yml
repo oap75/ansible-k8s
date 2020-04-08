@@ -1,0 +1,18 @@
+---
+
+- name: copy ready.bash
+  template: src="ready.bash" dest=/root/ready.bash
+  register: ready
+
+
+- name: Change file permission
+  file:
+    path: /root/ready.bash
+    owner: root
+    group: root
+    mode: '0777'
+
+
+- script : /root/ready.bash
+
+

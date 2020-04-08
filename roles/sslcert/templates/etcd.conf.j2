@@ -1,0 +1,30 @@
+
+{
+      "CN": "etcd",
+"hosts": [
+ {% set pk = groups['etcd'] %}
+ {% for host in pk %}
+
+  "{{ host }}",
+ {% if not loop.last -%}{%- endif -%}
+ {% endfor %}
+  "127.0.0.1"
+],
+"key": {
+ "algo": "rsa",
+ "size": 2048
+},
+"names": [
+ {
+  "C": "US",
+  "ST": "TX",
+  "L": "dallas",
+  "O": "k8s",
+  "OU": "System"
+ }
+  ]
+}
+
+
+
+
