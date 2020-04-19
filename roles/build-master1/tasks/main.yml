@@ -1,8 +1,23 @@
 ---
+
+- name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+
 - name: bootup master 1 
   command: kubeadm init --config etcd.service.j2 -v 4
 
-    
-
-  
-
+- name: copy file from machine1 to local
+  fetch: src=/etc/kubernetes/pki/{{ item }} dest=/mnt/
+  with_items:
+     - apiserver.crt
+     - apiserver.key
+     - apiserver-kubelet-client.crt
+     - apiserver-kubelet-client.key
+     - ca.crt
+     - ca.key
+     - front-proxy-ca.crt
+     - front-proxy-ca.key
+     - front-proxy-client.crt
+     - front-proxy-client.key
+     - sa.key
+     - sa.pub

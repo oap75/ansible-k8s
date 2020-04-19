@@ -1,0 +1,20 @@
+
+ - name: copy kubectl.bash script 
+   template: src=kubectl.bash dest=/root/kubectl.bash
+
+ - name: Change file permission
+   file:
+     path: /root/kubectl.bash
+     owner: root
+     group: root
+     mode: '0777'
+
+ - name: run script 
+   command : bash /root/kubectl.bash
+
+
+ - name: see all pods
+   command: kubectl get pods -A -o wide 
+
+ - name: see all nodes
+   command: kubectl get nodes -o wide 

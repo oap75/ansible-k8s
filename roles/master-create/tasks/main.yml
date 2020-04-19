@@ -1,0 +1,32 @@
+---
+- name: Create kubernetes directory in etc
+  file:
+    path: "{{ certs }}"
+    state: directory
+
+- name: copy file from machine1 to local
+  copy:
+    src=/mnt/{{master1_ip}}/etc/kubernetes/pki/{{ item }}
+    dest=/etc/kubernetes/pki/
+  with_items:
+     - apiserver.crt
+     - apiserver.key
+     - apiserver-kubelet-client.crt
+     - apiserver-kubelet-client.key
+     - ca.crt
+     - ca.key
+     - front-proxy-ca.crt
+     - front-proxy-ca.key
+     - front-proxy-client.crt
+     - front-proxy-client.key
+     - sa.key
+     - sa.pub
+
+- name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: bootup other masters
+  command: kubeadm init --config etcd.service.j2 -v 4
+    
+
+

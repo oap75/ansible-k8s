@@ -1,0 +1,5 @@
+- name: "shut down Debian flavored systems"
+  template: src="quick-install.yaml" dest=/root/quick-install.yaml
+
+- name: deploy cillium network 
+  command: kubectl apply -f /root/quick-install.yaml
