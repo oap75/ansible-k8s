@@ -1,0 +1,19 @@
+---
+- name: write & copy etcd.service
+  template: src=etcd.service.j2 dest=/root/
+
+- name: write & copy sysctl.conf
+  blockinfile:
+    path: /etc/sysctl.conf
+    block: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+      net.ipv6.conf.all.disable_ipv6 = 1
+      net.ipv6.conf.default.disable_ipv6 = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-arptables = 1
+
+    
+
+  
+

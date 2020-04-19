@@ -1,8 +1,5 @@
 master_cert_dir: /opt/ssl
 
-shared_ip: 192.168.43.100
-
-cni_ip: 10.244.0.0/16
 
 # ETCD configuration
 etcd_peer_url_scheme: https
@@ -11,11 +8,15 @@ etcd_lib_dir: /var/lib/etcd
 
 
 
+
+
+
 #- setup variable for cluster installation
 #- kubernetes dir
 kube_config_dir: /etc/kubernetes
 manifest_config_dir: /etc/kubernetes/manifests
 cert_dir: /etc/kubernetes/pki
+#master_cert_dir: /opt/kubernetes/pki
 kube_addon_dir: /etc/kubernetes/addon
 flannel_dir: /etc/sysconfig
 
@@ -27,11 +28,11 @@ api_image: gcr.io/google_containers/kube-apiserver-amd64:{{ k8s_version }}
 controller_image: gcr.io/google_containers/kube-controller-manager-amd64:{{ k8s_version }}
 scheduler_image: gcr.io/google_containers/kube-scheduler-amd64:{{ k8s_version }}
 kube_proxy_image: gcr.io/google_containers/kube-proxy-amd64:{{ k8s_version }}
-etcd_image: k8s.gcr.io/etcd:3.4.3-0
+etcd_image: k8s.gcr.io/etcd:3.3.10
 
 #- cluster service ip range
 service_ip_range: 10.96.0.0/24
-kubernetes_service_ip: 10.96.0.1    #- IP of default kubernetes service, it is the first IP of network CIDR range
+kubernetes_service_ip: 10.96.0.1  #- IP of default kubernetes service, it is the first IP of network CIDR range
 
 #- all certifactes for cluster  
 ca_cert: /etc/kubernetes/pki/ca.pem
@@ -47,13 +48,13 @@ scheduler_key: /etc/kubernetes/pki/scheduler-key.pem
 
 # Use keepalived for API HA. If there is only one master node, then set 'enabled' to false.
 keepalived:
-  enabled: true
-  interface: "{{ ansible_default_ipv4.interface }}"
-  shared_ip: 192.168.43.100         # Virtual IP
-  vrid: 110                     # Virtual Router ID
-  adv_interval: 1               # VRRP advert interval
-  authtype: PASS                # 'PASS' (simple password) or 'AH' (IPSEC)
-  password: k8s@123             # password for accessing VRRP
+ enabled: true
+ interface: "{{ ansible_default_ipv4.interface }}"
+ shared_ip: 192.168.43.100
+ vrid: 110
+ adv_interval: 1
+ authtype: PASS
+ password: k8s@123
 
 #- kubeconfig file 
 kubeadminconfig: /etc/kubernetes/kubeadminconfig
@@ -87,7 +88,7 @@ metrics_server: true
 
 # Setup haproxy for Kubernetes API loadbalancing
 haproxy:
-  enabled: true                # Set to false when already physical loadbalancer available
+  enabled: true
   config_dir: /etc/haproxy
   monitor_port: 9090
   admin_user: admin
@@ -97,7 +98,7 @@ haproxy:
 kube_api:
   interface: "{{ ansible_default_ipv4.interface }}"
   secure_port: 6443
-  url: "https://{{ keepalived.shared_ip }}"             # Should be haproxy host IP or network load balancer IP. If you use only one api server then setup its IP.
+  url: "https://{{ keepalived.shared_ip }}"
 
 #- etcd config
 etcd:

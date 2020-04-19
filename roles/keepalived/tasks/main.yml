@@ -30,3 +30,9 @@
     enabled: yes
     state: started
     daemon_reload: yes
+
+- name: Restart keepalived in case of config change
+  service:
+    name: keepalived
+    state: restarted
+  when: config is changed

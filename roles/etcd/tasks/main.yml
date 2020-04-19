@@ -6,13 +6,15 @@
 - name: copy run-etcd.bash script 
   template: src=run-etcd.bash dest=/etc/etcd/run-etcd.bash
 
-  - name: Change file permission
-    file:
-      path: /etc/etcd/run-etcd.bash
-      owner: root
-      group: root
-      mode: '0777'
+- name: Change file permission
+  file:
+    path: /etc/etcd/run-etcd.bash
+    owner: root
+    group: root
+    mode: '0777'
 
 
-- script : /etc/etcd/run-etcd.bash
+- name: run script and run etcd cluster 
+  command : bash /etc/etcd/run-etcd.bash
+
 

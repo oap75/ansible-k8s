@@ -1,0 +1,23 @@
+
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServer:
+  certSANs:
+  - "{{shared_ip}}"
+controlPlaneEndpoint: "{{shared_ip}}:6443"
+etcd:
+    external:
+        endpoints:
+      {% set pk = groups['etcd'] %}
+      {% for host in pk %}   
+        - https://{{ host }}:2379
+      {% if not loop.last -%}{%- endif -%}
+      {% endfor %}
+
+        caFile: /etc/etcd/ssl/ca.pem
+        certFile: /etc/etcd/ssl/etcd.pem
+        keyFile: /etc/etcd/ssl/etcd-key.pem
+
+networking:
+  podSubnet: {{cni_ip}} 

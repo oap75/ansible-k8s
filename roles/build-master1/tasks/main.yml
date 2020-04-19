@@ -1,0 +1,8 @@
+---
+- name: bootup master 1 
+  command: kubeadm init --config etcd.service.j2 -v 4
+
+    
+
+  
+

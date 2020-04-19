@@ -1,27 +1,36 @@
 global
-    user haproxy
-    group haproxy
+  log 127.0.0.1 local0
+  log 127.0.0.1 local1 notice
+  tune.ssl.default-dh-param 2048
 
 defaults
-    mode http
-    log global
-    retries 2
-    timeout connect 3000ms
-    timeout server 5000ms
-    timeout client 5000ms
+  log global
+  mode http
+  option dontlognull
+  timeout connect 5000ms
+  timeout client 50000ms
+  timeout server 50000ms
 
-frontend kubernetes
-  bind {{ shared_ip }}:{{ kube_api.secure_port }}
-  option tcplog
-  mode tcp
-  default_backend kubernetes-master-nodes
+listen stats
+  description Haproxy Statistics
+  bind :{{ haproxy.monitor_port | default('9090') }}
+  mode http
+  stats enable
+  stats uri /
+  stats refresh 5s
+  stats auth {{ haproxy.admin_user }}:{{ haproxy.admin_password }}
+  stats admin if TRUE
+  stats show-node
 
-backend kubernetes-master-nodes
-  mode tcp
-  balance roundrobin
-  option tcp-check
+frontend kube-api-https
+   mode tcp
+   bind :443
+   default_backend kube-api-backend
+
+backend kube-api-backend
+    mode tcp
 {% for host in groups['masters'] %}
-  server  {{ loop.index }} {{ host }} {{ host }}:{{ kube_api.secure_port }}  check  fall 3 rise 2
+    server  api{{ loop.index }}  {{ host }}:{{ kube_api.secure_port }}  check
 {% if not loop.last -%}{%- endif -%}
 {% endfor %}
 
