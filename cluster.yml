@@ -1,93 +1,93 @@
 ---
-# This playbook deploys a kubernetes cluster 
+# # This playbook deploys a kubernetes cluster 
 
-# install and configure haproxy 
- - hosts: masters
-   vars_files:
-     - all.yml.example
-   roles:
-     - { role: haproxy, when: haproxy.enabled }
-   tags:
-     - haproxy
+ # install and configure haproxy 
+  - hosts: masters
+    vars_files:
+      - all.yml.example
+    roles:
+      - { role: haproxy, when: haproxy.enabled }
+    tags:
+      - haproxy
 
 
-# install and configure keepalived
- - hosts: masters
-   vars_files:
-     - all.yml.example
-   roles:
-     - { role: keepalived, when: keepalived.enabled }
-   tags:
-     - keepalived
+# # install and configure keepalived
+  - hosts: masters
+    vars_files:
+      - all.yml.example
+    roles:
+      - { role: keepalived, when: keepalived.enabled }
+    tags:
+      - keepalived
 
-# Install sslcert
- - hosts: sslhost
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: sslcert 
-   tags:
-     - sslcert
+ # Install sslcert
+  - hosts: sslhost
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: sslcert 
+    tags:
+      - sslcert
 
-# copy sslcert
- - hosts: etcd
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: sslcert-copy
-   tags:
-     - sslcert-copy
+ # copy sslcert
+  - hosts: etcd
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: sslcert-copy
+    tags:
+      - sslcert-copy
 
 # Install etcd
- - hosts: etcd
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: etcd
-   tags:
-     - etcd
+  - hosts: etcd
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: etcd
+    tags:
+      - etcd
 
-# copy master-config-files
- - hosts: masters
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: kube-config
-   tags:
-     - kube-config
+ # copy master-config-files
+  - hosts: masters
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: kube-config
+    tags:
+      - kube-config
 
-# build up cluster in master 1 
- - hosts: master1
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: build-master1
-   tags: 
-     - build-master1
+ # build up cluster in master 1 
+  - hosts: master1
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: build-master1
+    tags: 
+      - build-master1
 
 
-# create cert dir on all masters
- - hosts: othermasters
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: master-create
-   tags: 
-     - master-create
+ # create cert dir on all masters
+  - hosts: othermasters
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: master-create
+    tags: 
+      - master-create
 
-# copy master-config-files
- - hosts: masters
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: kubectl-permission
-   tags:
-     - kubectl-permission
-# build netwrok add-on 
- - hosts: master1
-   vars_files:
-     - all.yml.example
-   roles:
-     - role: network-add-on
-   tags:
-     - network-add-on
+ # copy master-config-files
+  - hosts: masters
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: kubectl-permission
+    tags:
+      - kubectl-permission
+ # build netwrok add-on 
+  - hosts: master1
+    vars_files:
+      - all.yml.example
+    roles:
+      - role: network-add-on
+    tags:
+      - network-add-on

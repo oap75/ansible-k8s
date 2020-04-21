@@ -3,6 +3,9 @@
 - name: 1 > bridge-nf-call-iptables
   shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
 
+- name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+
 - name: bootup master 1 
   command: kubeadm init --config etcd.service.j2 -v 4
 

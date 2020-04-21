@@ -23,6 +23,9 @@
      - sa.pub
 
 - name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+
+- name: 1 > bridge-nf-call-iptables
   shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
 
 - name: bootup other masters

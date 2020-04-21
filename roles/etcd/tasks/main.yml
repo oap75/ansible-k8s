@@ -1,6 +1,32 @@
 ---
+ 
+- name: copy all certs
+  copy:
+    src=/home/omid/ansible/ansible-k8s/etcd/{{ item }}
+    dest=/usr/local/bin/
+  with_items:
+    - "etcd"
+    - "etcdctl"
+
+    
+- name: Change file permission
+  file:
+    path: /usr/local/bin/etcd
+    owner: root
+    group: root
+    mode: '0777'
+
+- name: Change file permission
+  file:
+    path: /usr/local/bin/etcdctl
+    owner: root
+    group: root
+    mode: '0777'
+
+
 - name: write & copy etcd.service
   template: src=etcd.service.j2 dest=/etc/systemd/system/etcd.service
+
 
 
 - name: copy run-etcd.bash script 
@@ -16,5 +42,3 @@
 
 - name: run script and run etcd cluster 
   command : bash /etc/etcd/run-etcd.bash
-
-
