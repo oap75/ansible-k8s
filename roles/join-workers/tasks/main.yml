@@ -1,0 +1,28 @@
+
+- name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: 1 > bridge-nf-call-iptables
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+
+
+- name: copy join workers
+  copy:
+    src=/tmp/join
+    dest=/root/join
+
+- name: Change file permission
+  file:
+    path: /root/join
+    owner: root
+    group: root
+    mode: '0777'
+
+- name: join now :)
+  shell: /root/join
+
+ 
+
+  
+    
+

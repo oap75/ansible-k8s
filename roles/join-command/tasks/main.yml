@@ -1,0 +1,9 @@
+  - name: get join command
+    shell: kubeadm token create --print-join-command
+    register: join_output
+
+  - debug:
+      var: join_output.stdout
+
+  - name: Write  Version
+    local_action: copy content={{ join_output.stdout }} dest=/tmp/join

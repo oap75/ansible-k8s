@@ -8,6 +8,10 @@
 
 - name: bootup master 1 
   command: kubeadm init --config etcd.service.j2 -v 4
+  register: kube_output
+
+- debug:
+    var: kube_output
 
 - name: copy file from machine1 to local
   fetch: src=/etc/kubernetes/pki/{{ item }} dest=/mnt/
