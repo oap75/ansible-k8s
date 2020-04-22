@@ -1,8 +1,8 @@
-master1_ip: 192.168.43.10
+master1_ip: 192.168.1.147
 
-shared_ip: 192.168.43.220
+shared_ip: 192.168.1.220
 
-cni_ip: 10.217.0.0/16
+cni_ip: 10.244.0.0/16
 
 
 certs: /etc/kubernetes/pki/
@@ -55,7 +55,7 @@ scheduler_key: /etc/kubernetes/pki/scheduler-key.pem
 keepalived:
   enabled: true
   interface: "{{ ansible_default_ipv4.interface }}"
-  shared_ip: 192.168.43.220        # Virtual IP
+  shared_ip: 192.168.1.220     # Virtual IP
   vrid: 110                     # Virtual Router ID
   adv_interval: 1               # VRRP advert interval
   authtype: PASS                # 'PASS' (simple password) or 'AH' (IPSEC)
@@ -66,7 +66,7 @@ kubeadminconfig: /etc/kubernetes/kubeadminconfig
 
 # all master fqdn name - it require to create ssl certificate
 # set it to only available api server
-masters_fqdn: ['master', 'master1']
+masters_fqdn: ['master-1', 'master-2', 'master-3']
 domain_name:  #- use to create wildcard ssl certificate for api and etcd
 
 #- cluster dns name and IP
